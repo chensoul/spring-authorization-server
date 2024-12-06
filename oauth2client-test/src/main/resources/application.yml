@@ -1,0 +1,21 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          spring-authorization-server:
+            client-id: default-client-id
+            client-secret: default-client-secret
+            client-name: Spring Authorization Server
+            scope:
+              - openid
+              - email
+              - profile
+        provider:
+          spring-authorization-server:
+            issuer-uri: http://localhost:9000
+
+
+logging:
+  level:
+    org.springframework.security: trace
