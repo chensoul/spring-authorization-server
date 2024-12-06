@@ -5,3 +5,7 @@ spring:
   application:
     name: spring-authorization-server
 
+logging:
+  level:
+    org.springframework.security: trace
+

@@ -1,4 +1,4 @@
-package com.chensoul.authserver.configuration;
+package com.chensoul.authserver.config;
 
 import com.chensoul.authserver.authentication.CustomUser;
 import com.chensoul.authserver.oauth2.client.CustomRegisteredClientRepository;
@@ -33,19 +33,20 @@ public class ConfigurationPrinter implements ApplicationRunner {
     public static void printSampleConfiguration() {
         String sampleConfig = """
                 server: # OPTIONAL
-                  # The port on which Spring Authorization Server runs. Defaults to 9000.
+                  # The port on which Local Authorization Server runs. Defaults to 9000.
                   port: 9000
-                
+               
                 application:
                   spring-authorization-server:
-                
+               
                     # OPTIONAL: whether to use a hardcoded RSA key for JWT signing, or a randomly generated one.
                     # Hardcoded keys mean faster startup time.
                     jwk:
                       # Defaults to false
                       random: false
-                
-                
+                      publicKey:
+                      privateKey:
+               
                     # OPTIONAL: custom users for logging in
                     users:
                       - username: my-user # REQUIRED
@@ -54,7 +55,7 @@ public class ConfigurationPrinter implements ApplicationRunner {
                         # All attributes are optional.
                         attributes: # OPTIONAL
                           # standard OpenID Connect attributes:
-                
+               
                           # scope: profile
                           name: "Jane T. Spring"
                           given_name: "Jane"
@@ -69,15 +70,15 @@ public class ConfigurationPrinter implements ApplicationRunner {
                           birthdate: "1970-01-01"
                           zoneinfo: "Europe/Paris"
                           locale: "fr-FR"
-                
+               
                           # scope: email
                           email: "user@example.com"
                           email_verified: true
-                
+               
                           # scope: phone_number
                           phone_number: "+1 (555) 555-1234"
                           phone_number_verified: true
-                
+               
                           # scope: address
                           address:
                             formatted: "1, OpenID St., Openid.net City, 1234 Identity Realm, Internet"
@@ -86,15 +87,15 @@ public class ConfigurationPrinter implements ApplicationRunner {
                             region: "Identity Realm"
                             postal_code: "1234"
                             country: "Internet"
-                
+               
                           # all other attributes are custom ("user-defined"), and added to the id_token claims when
                           # the "profile" scope is requested
                           some-claim: "some-value"
                           custom-age: 42
                       - username: other-user
                         password: other-password
-                
-                
+               
+               
                     # OPTIONAL: custom client registrations, which must match the client application's
                     # spring.security.oauth2.client.registration.<id>.* properties
                     clients:
@@ -140,14 +141,14 @@ public class ConfigurationPrinter implements ApplicationRunner {
                         # OPTIONAL: enforce scope validation. When set to true, clients may only use one of
                         # the scopes defined for this client. Defaults to false.
                         validate-scope: false
-                
+               
                       - client-id: "other-client"
                         client-secret: "other-secret"
                         client-authentication-methods:
                           - "client_secret_basic"
                         authorization-grant-types:
                           - "client_credentials"
-                """;
+               """;
         System.out.println(sampleConfig);
     }
 
@@ -158,7 +159,7 @@ public class ConfigurationPrinter implements ApplicationRunner {
 
     public static String getHelpString() {
         return """
-                You are using Spring Authorization Server v%s.
+                You are using Local Authorization Server v%s.
                 
                 Usage:
                 
@@ -173,7 +174,7 @@ public class ConfigurationPrinter implements ApplicationRunner {
                 Options:
                 
                 \t--config=my-configuration.yml:
-                \t\tRun Spring Authorization Server using the configuration file `my-configuration.yml`. To
+                \t\tRun Local Authorization Server using the configuration file `my-configuration.yml`. To
                 \t\tobtain a sample configuration file, see --print-sample-config
                 
                 \t--help:
@@ -205,14 +206,14 @@ public class ConfigurationPrinter implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         String welcomeMessage = """
-                You are using Spring Authorization Server.
+                You are using Local Authorization Server.
                 
-                To learn how to configure the Spring Authorization Server, re-run with the --help flag.
+                To learn how to configure the Local Authorization Server, re-run with the --help flag.
                 
                 \ud83d\udea8 DO NOT USE IN PRODUCTION
                 ---
                 
-                Spring Authorization Server is built for local development and testing. It is not, in any way, fit for production.
+                Local Authorization Server is built for local development and testing. It is not, in any way, fit for production.
                 """;
         String userConfig = this.getUserConfig();
         String clientConfig = this.repository.isDefault() ? this.getDefaultClientConfig():this.getClientConfig();
@@ -248,7 +249,7 @@ public class ConfigurationPrinter implements ApplicationRunner {
                             issuer-uri: %s://localhost:%s
                 
                 
-                The client properties must match those defined in Spring Authorization Server's configuration, under [application.spring-authorization-server.clients].
+                The client properties must match those defined in Local Authorization Server's configuration, under [application.spring-authorization-server.clients].
                 
                 Make sure that the correct redirect URLs are registered in your Client configuration. For the default Spring Boot configuration, the redirect uri would be: http://127.0.0.1:8080/login/oauth2/code/spring-authorization-server
                 
@@ -271,7 +272,7 @@ public class ConfigurationPrinter implements ApplicationRunner {
                           spring-authorization-server:
                             client-id: %s
                             client-secret: %s
-                            client-name: Spring Authorization Server
+                            client-name: Local Authorization Server
                             scope:
                               - openid
                               - email

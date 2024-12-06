@@ -1,6 +1,6 @@
 package com.chensoul.authserver;
 
-import com.chensoul.authserver.configuration.ServerProperties;
+import com.chensoul.authserver.config.ServerProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Spring Authorization Server</title>
+    <title>Local Authorization Server</title>
     <link href="/style.css" rel="stylesheet"/>
 </head>
 <body>
-<h1>Spring Authorization Server</h1>
+<h1>Local Authorization Server</h1>
 <div class="content">
     <div class="alert error">
         <b>DO NOT USE IN PRODUCTION!</b>
         <br>
         <br>
-        Spring Authorization Server is built for local development and testing. It is not secure, by design, and
+        Local Authorization Server is built for local development and testing. It is not secure, by design, and
         MUST NOT be used for production use-cases.
     </div>
 
     <div id="authentication" th:if="${authentication == null}">
         <p>
-            When using the Spring Authorization Server from another service, you will be asked to log in.
+            When using the Local Authorization Server from another service, you will be asked to log in.
             You may log in with one of the following users:
         </p>
         <ul>

@@ -1,4 +1,4 @@
-package com.chensoul.authserver.configuration;
+package com.chensoul.authserver.config;
 
 import com.chensoul.authserver.authentication.CustomUser;
 import com.chensoul.authserver.oauth2.client.ClientProperties;

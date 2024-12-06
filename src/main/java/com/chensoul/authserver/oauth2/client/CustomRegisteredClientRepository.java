@@ -1,6 +1,6 @@
 package com.chensoul.authserver.oauth2.client;
 
-import com.chensoul.authserver.configuration.Defaults;
+import com.chensoul.authserver.config.Defaults;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;

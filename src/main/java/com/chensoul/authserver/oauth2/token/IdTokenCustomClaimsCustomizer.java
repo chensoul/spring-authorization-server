@@ -11,7 +11,7 @@ public class IdTokenCustomClaimsCustomizer extends TokenCustomizer {
     }
 
     public boolean shouldCustomize(JwtEncodingContext context) {
-        return this.isIdToken(context) && context.getAuthorizedScopes().contains(OidcScopes.PROFILE);
+        return this.isIdToken(context) && context.getAuthorizedScopes().contains(OidcScopes.OPENID);
     }
 
     public void customizeInternal(JwtEncodingContext context) {

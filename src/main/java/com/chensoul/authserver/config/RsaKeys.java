@@ -1,4 +1,4 @@
-package com.chensoul.authserver.configuration;
+package com.chensoul.authserver.config;
 
 import com.nimbusds.jose.jwk.RSAKey;
 import java.security.KeyFactory;

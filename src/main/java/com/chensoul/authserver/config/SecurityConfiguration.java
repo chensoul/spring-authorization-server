@@ -1,4 +1,4 @@
-package com.chensoul.authserver.configuration;
+package com.chensoul.authserver.config;
 
 import com.chensoul.authserver.authentication.CustomUserDetailsService;
 import com.chensoul.authserver.oauth2.ScopeAndRedirectUriValidationPostProcessor;

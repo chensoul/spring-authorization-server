@@ -1,6 +1,6 @@
 package com.chensoul.authserver;
 
-import com.chensoul.authserver.configuration.ConfigurationPrinter;
+import com.chensoul.authserver.config.ConfigurationPrinter;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Locale;

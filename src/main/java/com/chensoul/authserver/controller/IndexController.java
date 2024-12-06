@@ -1,7 +1,7 @@
 package com.chensoul.authserver.controller;
 
 import com.chensoul.authserver.authentication.CustomUserDetailsService;
-import com.chensoul.authserver.configuration.ConfigurationPrinter;
+import com.chensoul.authserver.config.ConfigurationPrinter;
 import com.chensoul.authserver.oauth2.client.CustomRegisteredClientRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
