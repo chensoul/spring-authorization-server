@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationProvider;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientCredentialsAuthenticationProvider;
+import org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcLogoutAuthenticationProvider;
 
 public class ScopeAndRedirectUriValidationPostProcessor implements ObjectPostProcessor<AuthenticationProvider> {
     private final CustomRegisteredClientRepository repository;
@@ -21,8 +22,8 @@ public class ScopeAndRedirectUriValidationPostProcessor implements ObjectPostPro
             provider.setAuthenticationValidator(new AuthorizationCodeRequestValidator());
         } else if (authenticationProvider instanceof OAuth2ClientCredentialsAuthenticationProvider provider) {
             provider.setAuthenticationValidator(new ClientCredentialsRequestValidator());
-        } else if (authenticationProvider instanceof org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcLogoutAuthenticationProvider provider) {
-            return new OidcLogoutAuthenticationProvider(provider, this.authorizationService, this.repository);
+        } else if (authenticationProvider instanceof OidcLogoutAuthenticationProvider provider) {
+            return new CustomOidcLogoutAuthenticationProvider(provider, this.authorizationService, this.repository);
         }
 
         return authenticationProvider;

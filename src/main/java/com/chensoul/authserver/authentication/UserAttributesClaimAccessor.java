@@ -10,12 +10,15 @@ import org.springframework.security.oauth2.core.ClaimAccessor;
 
 public class UserAttributesClaimAccessor implements ClaimAccessor {
     private final Map<String, Object> claims;
-    private static final Set<String> OPENID_PROFILE_CLAIMS = Set.of("name", "given_name", "family_name", "middle_name", "nickname", "preferred_username", "profile", "picture", "website", "gender", "birthdate", "zoneinfo", "locale", "updated_at");
+    private static final Set<String> OPENID_PROFILE_CLAIMS = Set.of("name", "given_name", "family_name",
+            "middle_name", "nickname", "preferred_username", "profile",
+            "picture", "website", "gender", "birthdate", "zoneinfo", "locale", "updated_at");
     private static final Set<String> OPENID_EMAIL_CLAIMS = Set.of("email", "email_verified");
     private static final Set<String> OPENID_PHONE_CLAIMS = Set.of("phone_number", "phone_number_verified");
     private static final Set<String> OPENID_ADDRESS_CLAIMS = Set.of("address");
     private static final Set<String> OPENID_SUB_CLAIMS = Set.of("sub");
-    public static final Set<String> RESERVED_CLAIMS = Set.of("acr", "amr", "at_hash", "auth_time", "azp", "c_hash", "nonce", "aud", "exp", "iat", "iss", "jti", "nbf", "sub");
+    public static final Set<String> RESERVED_CLAIMS = Set.of("acr", "amr", "at_hash", "auth_time", "azp",
+            "c_hash", "nonce", "aud", "exp", "iat", "iss", "jti", "nbf", "sub");
     public static final Set<String> STANDARD_CLAIMS;
 
     public UserAttributesClaimAccessor() {

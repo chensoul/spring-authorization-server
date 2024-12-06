@@ -1,4 +1,4 @@
-package com.chensoul.authserver.web;
+package com.chensoul.authserver.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

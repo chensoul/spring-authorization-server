@@ -3,14 +3,15 @@ package com.chensoul.authserver.oauth2.token;
 import com.chensoul.authserver.authentication.UserAttributesClaimAccessor;
 import com.chensoul.authserver.authentication.CustomUser;
 import java.util.Map;
+import static org.springframework.security.oauth2.core.oidc.OidcScopes.PHONE;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 
-public class IdTokenPhoneNumberCustomizer extends TokenCustomizer {
-    public IdTokenPhoneNumberCustomizer() {
+public class IdTokenPhoneCustomizer extends TokenCustomizer {
+    public IdTokenPhoneCustomizer() {
     }
 
     boolean shouldCustomize(JwtEncodingContext context) {
-        return this.isIdToken(context) && this.hasScope(context, "phone");
+        return this.isIdToken(context) && this.hasScope(context, PHONE);
     }
 
     void customizeInternal(JwtEncodingContext context) {

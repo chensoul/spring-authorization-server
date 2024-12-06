@@ -1,8 +1,9 @@
 package com.chensoul.authserver.oauth2.token;
 
-import com.chensoul.authserver.authentication.UserAttributesClaimAccessor;
 import com.chensoul.authserver.authentication.CustomUser;
+import com.chensoul.authserver.authentication.UserAttributesClaimAccessor;
 import java.util.Map;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 
 public class IdTokenCustomClaimsCustomizer extends TokenCustomizer {
@@ -10,7 +11,7 @@ public class IdTokenCustomClaimsCustomizer extends TokenCustomizer {
     }
 
     public boolean shouldCustomize(JwtEncodingContext context) {
-        return this.isIdToken(context) && context.getAuthorizedScopes().contains("profile");
+        return this.isIdToken(context) && context.getAuthorizedScopes().contains(OidcScopes.PROFILE);
     }
 
     public void customizeInternal(JwtEncodingContext context) {

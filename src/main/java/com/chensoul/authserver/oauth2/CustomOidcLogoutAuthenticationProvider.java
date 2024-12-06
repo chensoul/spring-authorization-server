@@ -11,12 +11,12 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcLogoutAuthenticationToken;
 import org.springframework.util.StringUtils;
 
-class OidcLogoutAuthenticationProvider implements AuthenticationProvider {
+class CustomOidcLogoutAuthenticationProvider implements AuthenticationProvider {
     private final org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcLogoutAuthenticationProvider delegate;
     private final OAuth2AuthorizationService authorizationService;
     private final CustomRegisteredClientRepository registeredClientRepository;
 
-    OidcLogoutAuthenticationProvider(org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcLogoutAuthenticationProvider delegate, OAuth2AuthorizationService authorizationService, CustomRegisteredClientRepository registeredClientRepository) {
+    CustomOidcLogoutAuthenticationProvider(org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcLogoutAuthenticationProvider delegate, OAuth2AuthorizationService authorizationService, CustomRegisteredClientRepository registeredClientRepository) {
         this.delegate = delegate;
         this.authorizationService = authorizationService;
         this.registeredClientRepository = registeredClientRepository;

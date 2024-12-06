@@ -1,4 +1,4 @@
-package com.chensoul.authserver.web;
+package com.chensoul.authserver.controller;
 
 import com.chensoul.authserver.authentication.CustomUserDetailsService;
 import com.chensoul.authserver.configuration.ConfigurationPrinter;
@@ -9,11 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-class LandingController {
+class IndexController {
     private final CustomUserDetailsService userDetailsService;
     private final CustomRegisteredClientRepository registeredClientRepository;
 
-    LandingController(CustomUserDetailsService userDetailsService, CustomRegisteredClientRepository registeredClientRepository) {
+    IndexController(CustomUserDetailsService userDetailsService, CustomRegisteredClientRepository registeredClientRepository) {
         this.userDetailsService = userDetailsService;
         this.registeredClientRepository = registeredClientRepository;
     }

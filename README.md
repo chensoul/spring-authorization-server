@@ -1,5 +1,20 @@
 # spring-authorization-server
 
+## How to use
+
+Package the application using the maven command:
+
+```bash
+./mvnw clean package
+```
+
+Run the application with `--config` argument for the sample file `samples/config.yml`:
+
+```bash
+java -jar target/spring-authorization-server-0.0.1-SNAPSHOT.jar --config=samples/config.yml
+```
+
+
 
 ## Enable AOT
 
@@ -45,7 +60,7 @@ docker build -t chensoul/spring-authorization-server:0.0.1 .
 Start the container by running:
 
 ```bash
-docker run -d  -p 9000:9000 chensoul/spring-authorization-server:0.0.1
+docker run -d -p 9000:9000 chensoul/spring-authorization-server:0.0.1
 ```
 
 Alternatively, you can push the image to docker hub:

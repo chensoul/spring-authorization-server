@@ -8,7 +8,7 @@ import com.chensoul.authserver.oauth2.client.CustomRegisteredClientRepository;
 import com.chensoul.authserver.oauth2.token.IdTokenAddressCustomizer;
 import com.chensoul.authserver.oauth2.token.IdTokenCustomClaimsCustomizer;
 import com.chensoul.authserver.oauth2.token.IdTokenEmailCustomizer;
-import com.chensoul.authserver.oauth2.token.IdTokenPhoneNumberCustomizer;
+import com.chensoul.authserver.oauth2.token.IdTokenPhoneCustomizer;
 import com.chensoul.authserver.oauth2.token.IdTokenProfileCustomizer;
 import com.chensoul.authserver.oauth2.token.TokenCustomizer;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -42,7 +42,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfiguration {
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, CustomRegisteredClientRepository repository, OAuth2AuthorizationService authorizationService) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                            CustomRegisteredClientRepository repository,
+                                            OAuth2AuthorizationService authorizationService) throws Exception {
         OAuth2AuthorizationServerConfigurer authServerConfigurer = new OAuth2AuthorizationServerConfigurer();
         return http.authorizeHttpRequests(req -> {
             req.requestMatchers("/", "/style.css", "/favicon.ico").permitAll()
@@ -69,7 +71,8 @@ public class SecurityConfiguration {
         if (properties.getClients().isEmpty()) {
             return new CustomRegisteredClientRepository(Defaults.CLIENT);
         } else {
-            List<CustomRegisteredClient> registeredClients = properties.getClients().stream().map(SecurityConfiguration::toRegisteredClient).toList();
+            List<CustomRegisteredClient> registeredClients = properties.getClients()
+                    .stream().map(SecurityConfiguration::toRegisteredClient).toList();
             return new CustomRegisteredClientRepository(registeredClients);
         }
     }
@@ -81,7 +84,9 @@ public class SecurityConfiguration {
 
     @Bean
     JWKSource<SecurityContext> jwkSource(ServerProperties properties) {
-        RSAKey rsaKey = RsaKeys.getRsaKey(properties.getJwk().random(), properties.getJwk().publicKey(), properties.getJwk().privateKey());
+        RSAKey rsaKey = RsaKeys.getRsaKey(properties.getJwk().random(),
+                properties.getJwk().publicKey(),
+                properties.getJwk().privateKey());
         JWKSet jwkSet = new JWKSet(rsaKey);
         return new ImmutableJWKSet(jwkSet);
     }
@@ -93,7 +98,8 @@ public class SecurityConfiguration {
 
     @Bean
     CustomUserDetailsService userDetailsService(ServerProperties properties) {
-        return properties.getUsers().isEmpty() ? new CustomUserDetailsService(Defaults.USER):new CustomUserDetailsService(properties.getUsers());
+        return properties.getUsers().isEmpty() ? new CustomUserDetailsService(Defaults.USER)
+                :new CustomUserDetailsService(properties.getUsers());
     }
 
     @Bean
@@ -101,7 +107,7 @@ public class SecurityConfiguration {
         List<TokenCustomizer> tokenCustomizers = Arrays.asList(
                 new IdTokenEmailCustomizer(),
                 new IdTokenProfileCustomizer(),
-                new IdTokenPhoneNumberCustomizer(),
+                new IdTokenPhoneCustomizer(),
                 new IdTokenAddressCustomizer(),
                 new IdTokenCustomClaimsCustomizer()
         );

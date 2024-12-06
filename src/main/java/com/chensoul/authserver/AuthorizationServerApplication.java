@@ -39,7 +39,8 @@ public class AuthorizationServerApplication {
     private static void setupAot() {
         if (System.getProperty("spring.aot.enabled")==null) {
             try {
-                Class.forName("com.chensoul.spring.authserver.LocalAuthorizationServerApplication__ApplicationContextInitializer", false, AuthorizationServerApplication.class.getClassLoader());
+                Class.forName("com.chensoul.authserver.AuthorizationServerApplication__ApplicationContextInitializer",
+                        false, AuthorizationServerApplication.class.getClassLoader());
                 System.setProperty("spring.aot.enabled", "true");
             } catch (ClassNotFoundException var1) {
             }

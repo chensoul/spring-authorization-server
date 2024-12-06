@@ -1,0 +1,18 @@
+application:
+  spring-authorization-server:
+    users:
+      - username: alice
+        password: alice
+        attributes:
+          email: alice@example.com
+          roles:
+            - viewer
+            - editor
+            - admin
+      - username: bob
+        password: bob
+        attributes:
+          email: bob@example.com
+          roles:
+            - viewer
+            - editor
