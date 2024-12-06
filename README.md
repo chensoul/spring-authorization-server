@@ -54,11 +54,7 @@ docker build -t chensoul/spring-authorization-server:0.0.1 .
 Start the container by running:
 
 ```bash
-docker run -d \
-  -p 8888:8888 \
-  --mount type=bind,source="$(pwd)"/samples,target=/app/samples \
-  -e SPRING_CONFIG_IMPORT='file:samples/config-repo-tls.yml' \
-  chensoul/spring-authorization-server:0.0.1
+docker run -d  -p 9000:9000 chensoul/spring-authorization-server:0.0.1
 ```
 
 Alternatively, you can push the image to docker hub:
