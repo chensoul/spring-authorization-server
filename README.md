@@ -3,15 +3,6 @@
 
 ## Enable AOT
 
-Disable the refresh scope in the application.yaml file:
-
-```yaml
-spring:
-  cloud:
-    refresh:
-      enabled: false
-```
-
 Install GraalVM JDK:
 
 ```bash
