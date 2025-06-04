@@ -1,6 +1,6 @@
 # spring-authorization-server
 
-## How to use
+## How to use from source code
 
 Package the application using the maven command:
 
@@ -35,6 +35,22 @@ Then run the application:
 
 ```bash
 java -jar target/spring-authorization-server-0.0.1-SNAPSHOT.jar --config=samples/config.yml
+```
+
+## How to use from maven
+
+You can download it directly using Maven:
+
+```bash
+mvn dependency:copy \
+ -Dartifact=com.chensoul:spring-authorization-server:<VERSION> \
+ -DoutputDirectory=.
+```
+
+To run Spring Authorization Server, Ensure that Java 17+ is installed, and then run:
+
+```bash
+java -jar spring-authorization-server-<VERSION>.jar
 ```
 
 ## Using in a client application
@@ -134,7 +150,7 @@ class TestcontainersTests {
 Install GraalVM JDK:
 
 ```bash
-sdk install java 21.0.5-graal 
+sdk env install
 ```
 
 Run maven command to compile the native image:
