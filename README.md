@@ -233,6 +233,9 @@ server:
     client-auth: NONE
 ```
 
+For more information about TLS support in Spring Boot, see the blog [Securing Spring Boot Applications With SSL
+](https://spring.io/blog/2023/06/07/securing-spring-boot-applications-with-ssl) and [How can I generate a self-signed SSL certificate using OpenSSL?](https://stackoverflow.com/questions/10175812/how-can-i-generate-a-self-signed-ssl-certificate-using-openssl)
+
 ## Enable AOT
 
 Install GraalVM JDK:
