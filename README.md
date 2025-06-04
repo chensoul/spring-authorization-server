@@ -213,6 +213,26 @@ class OAuth2ClientMainTest {
 For more information about Spring Boot Testjars and OAuth2 clients, see the
 official [GitHub repo](https://github.com/spring-projects-experimental/spring-boot-testjars?tab=readme-ov-file#oauth2clientproviderissueruri).
 
+## TLS support
+
+Spring Authorization Server is built on Spring Boot, and exposes Spring Boot configuration properties. Spring Boot can be configured to serve traffic over TLS. Update the configuration and add the following properties:
+
+```yaml
+spring:
+  ssl:
+    bundle:
+      pem:
+        server:
+          keystore:
+            certificate: /path/to/certificate/localhost.pem
+            private-key: /path/to/private/key/localhost-key.pem
+
+server:
+  ssl:
+    bundle: server
+    client-auth: NONE
+```
+
 ## Enable AOT
 
 Install GraalVM JDK:

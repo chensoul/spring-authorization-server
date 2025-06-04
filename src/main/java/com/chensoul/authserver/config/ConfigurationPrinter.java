@@ -111,6 +111,7 @@ public class ConfigurationPrinter implements ApplicationRunner {
                           - "authorization_code"
                           - "client_credentials"
                           - "refresh_token"
+                          - "token_exchange"
                         # OPTIONAL, can be anything
                         scope:
                           - "openid"
