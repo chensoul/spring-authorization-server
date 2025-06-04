@@ -39,12 +39,10 @@ java -jar target/spring-authorization-server-0.0.1-SNAPSHOT.jar --config=samples
 
 ## How to use from maven
 
-You can download it directly using Maven:
+You can download spring-authorization-server jar directly using Maven:
 
 ```bash
-mvn dependency:copy \
- -Dartifact=com.chensoul:spring-authorization-server:<VERSION> \
- -DoutputDirectory=.
+mvn dependency:copy -Dartifact=com.chensoul:spring-authorization-server:0.0.1-SNAPSHOT -DoutputDirectory=.
 ```
 
 To run Spring Authorization Server, Ensure that Java 17+ is installed, and then run:
@@ -60,7 +58,8 @@ java -jar spring-authorization-server-<VERSION>.jar
 Copy the sample configuration that the authorization server prints out in the console, and use it in your client
 application.Make sure the `openid` scope is included in the client configuration.
 
-Finally, configure your client application to extract authorities from the custom `roles` claim, by providing an `OidcUserService` bean:
+Finally, configure your client application to extract authorities from the custom `roles` claim, by providing an
+`OidcUserService` bean:
 
 ```java
 
@@ -71,7 +70,7 @@ OidcUserService oidcUserService() {
         // Will map the "roles" claim from the `id_token` into user authorities (roles)
         var roles = oidcUserRequest.getIdToken().getClaimAsStringList("roles");
         var authorities = AuthorityUtils.createAuthorityList();
-        if (roles!=null) {
+        if (roles != null) {
             roles.stream()
                     .map(r -> "ROLE_" + r)
                     .map(SimpleGrantedAuthority::new)
@@ -106,19 +105,20 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 First add the `testcontainers` dependency to your project, for example pom.xml in a maven project:
 
 ```xml
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-    </dependency>
-    <dependency>
-     <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-testcontainers</artifactId>
-    </dependency>
-    
-    <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>junit-jupiter</artifactId>
-    </dependency>
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+</dependency>
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-testcontainers</artifactId>
+</dependency>
+
+<dependency>
+<groupId>org.testcontainers</groupId>
+<artifactId>junit-jupiter</artifactId>
+</dependency>
 ```
 
 Then, configure `@SpringBootTests` to use Spring Authorization Server + Testcontainers:
@@ -127,23 +127,91 @@ Then, configure `@SpringBootTests` to use Spring Authorization Server + Testcont
 
 @Testcontainers(disabledWithoutDocker = true)
 @SpringBootTest
-class TestcontainersTests {
-
+public class OAuth2ClientApplicationTest {
     @Container
     static GenericContainer<?> authServer = new GenericContainer<>("chensoul/spring-authorization-server:0.0.1")
             .withExposedPorts(9000);
+    @Value("${spring.security.oauth2.client.provider.spring-authorization-server.issuer-uri}")
+    String issuerUri;
 
     @DynamicPropertySource
     static void clientRegistrationProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.security.oauth2.client.provider.spring-authorization-server.issuer-uri",
-                () -> "http://localhost:" + authServer.getExposedPorts().get(0));
+                () -> "http://localhost:" + authServer.getFirstMappedPort());
     }
 
     @Test
-    void contextLoads() {
+    void authorizationServerAccessOpenIdConfiguration() {
+        String oidcMetadataUrl = issuerUri + "/.well-known/openid-configuration";
+        RestClient restClient = RestClient.create();
+        // @formatter:off
+        ResponseEntity<String> result = restClient.get()
+                .uri(oidcMetadataUrl)
+                .retrieve()
+                .toEntity(String.class);
+        // @formatter:on
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }
 ```
+
+### Using in tests with Spring Boot Testjars
+
+First add Spring Boot Testjars to the project:
+
+```xml
+
+<dependency>
+    <groupId>org.springframework.experimental.boot</groupId>
+    <artifactId>spring-boot-testjars</artifactId>
+    <version>0.0.3</version>
+</dependency>
+```
+
+Download spring-authorization-server-<VERSION>.jar directly using Maven:
+
+```bash
+mvn dependency:copy -Dartifact=com.chensoul:spring-authorization-server:0.0.1-SNAPSHOT -DoutputDirectory=.
+```
+
+Configure @SpringBootTests to use Spring Authorization Server:
+
+```java
+
+@SpringBootTest(classes = OAuth2ClientMainTest.TestOAuth2ClientConfig.class)
+class OAuth2ClientMainTest {
+    @Value("${spring.security.oauth2.client.provider.spring-authorization-server.issuer-uri}")
+    String issuerUri;
+
+    @Test
+    void authorizationServerAccessOpenIdConfiguration() {
+        String oidcMetadataUrl = issuerUri + "/.well-known/openid-configuration";
+        RestClient restClient = RestClient.create();
+        // @formatter:off
+        ResponseEntity<String> result = restClient.get()
+                .uri(oidcMetadataUrl)
+                .retrieve()
+                .toEntity(String.class);
+        // @formatter:on
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @TestConfiguration(proxyBeanMethods = false)
+    @EnableDynamicProperty
+    static class TestOAuth2ClientConfig {
+        @Bean
+        @OAuth2ClientProviderIssuerUri(providerName = "spring-authorization-server")
+        static CommonsExecWebServerFactoryBean authorizationServer() {
+            return CommonsExecWebServerFactoryBean.builder()
+                    .classpath(cp -> cp.files("spring-authorization-server-0.0.1-SNAPSHOT.jar"))
+                    .mainClass("org.springframework.boot.loader.launch.JarLauncher");
+        }
+    }
+}
+```
+
+For more information about Spring Boot Testjars and OAuth2 clients, see the
+official [GitHub repo](https://github.com/spring-projects-experimental/spring-boot-testjars?tab=readme-ov-file#oauth2clientproviderissueruri).
 
 ## Enable AOT
 
@@ -167,7 +235,7 @@ Create an image with [buildpack](https://buildpacks.io/).
 brew install buildpacks/tap/pack
 
 pack build spring-authorization-server:0.0.1 \
-  --path ./spring-authorization-server-0.0.1-SNAPSHOT.jar \
+  --path target/spring-authorization-server-0.0.1-SNAPSHOT.jar \
   --builder paketobuildpacks/builder:tiny
 ```
 
